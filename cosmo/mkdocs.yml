@@ -6,13 +6,13 @@ nav:
     - Statistics (download): StatisticsNotes.pdf
     - Code to get you started:
       - Basic cosmology: notebooks/CosmoIntro.ipynb
-    #   - Calculating distances: notebooks/Distances.ipynb
-    #   - Fitting supernova data: notebooks/Fit_Models.ipynb
-    #   - (How we generated mock data): notebooks/Make_Mock_Data.ipynb
-    #   - Interesting tidbits: notebooks/InterestingTidbits.ipynb
-    # - Data:
-    #   - Data00: notebooks/data/Data00.txt
-    #   - Data0: notebooks/data/Data0.txt
+      - Calculating distances: notebooks/Distances.ipynb
+      - Fitting supernova data: notebooks/Fit_Models.ipynb
+      - (How we generated mock data): notebooks/Make_Mock_Data.ipynb
+      - Interesting tidbits: notebooks/InterestingTidbits.ipynb
+    - Data:
+      - Data00: notebooks/data/Data00.txt
+      - Data0: notebooks/data/Data0.txt
     #   - Data1: notebooks/data/Data1.txt
     #   - Data2: notebooks/data/Data2.txt
     #   - Data3: notebooks/data/Data3.txt
@@ -37,4 +37,4 @@ plugins:
 
 # Commands:
 # mkdocs serve (shows this page on a local server)
-# mkdocs gh-deploy (deploys to sit)
+# mkdocs gh-deploy (deploys to site)
