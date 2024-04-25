@@ -36,5 +36,6 @@ plugins:
       custom_templates: templates
 
 # Commands:
+# conda activate p3
 # mkdocs serve (shows this page on a local server)
 # mkdocs gh-deploy (deploys to site)
