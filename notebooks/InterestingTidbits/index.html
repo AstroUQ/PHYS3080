@@ -429,6 +429,13 @@
   
 </li>
       
+        <li class="md-nav__item">
+  <a href="#53-analytic-marginalisation" class="md-nav__link">
+    5.3 Analytic Marginalisation
+  </a>
+  
+</li>
+      
     </ul>
   
 </nav>
@@ -576,6 +583,13 @@
         <li class="md-nav__item">
   <a href="#52-interpolation" class="md-nav__link">
     5.2 Interpolation
+  </a>
+  
+</li>
+      
+        <li class="md-nav__item">
+  <a href="#53-analytic-marginalisation" class="md-nav__link">
+    5.3 Analytic Marginalisation
   </a>
   
 </li>
@@ -2321,6 +2335,19 @@ jp-needs-light-background
 </div>
 
 </div>
+</div>
+<div class="jp-Cell jp-MarkdownCell jp-Notebook-cell">
+<div class="jp-Cell-inputWrapper">
+<div class="jp-Collapser jp-InputCollapser jp-Cell-inputCollapser">
+</div>
+<div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
+</div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
+<h2 id="53-analytic-marginalisation">5.3 Analytic Marginalisation<a class="anchor-link" href="#53-analytic-marginalisation">&#182;</a></h2><p>In the code supplied we marginalise over the absolute magnitude of supernovae by doing a loop over a wide range of possible Mscr values.  Loops in code are slow, and in this case the best Mscr to use can be derived analytically.  The outline of the derivation can be found in the appendix of Goliath et al. 2001: <a href="https://arxiv.org/abs/astro-ph/0104009">https://arxiv.org/abs/astro-ph/0104009</a></p>
+<p>Here's some code that implements it.  (It won't run here, but you can cut and paste it in.)</p>
+
+</div>
+</div>
+</div>
 </div><div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell jp-CodeCell jp-Notebook-cell jp-mod-noOutputs  ">
 <div class="jp-Cell-inputWrapper">
@@ -2342,9 +2369,47 @@ jp-needs-light-background
                 </div>
             </clipboard-copy>
         </div>
-            <div class="highlight-ipynb hl-python"><pre><span></span>
+            <div class="highlight-ipynb hl-python"><pre><span></span><span class="c1"># The following is if you&#39;re using diagonal errors (an error bar on each supernova individually)</span>
+<span class="k">def</span> <span class="nf">chi2_mscranalytic</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span><span class="n">sigma</span><span class="p">):</span>
+    <span class="c1"># delta is the array of differences between mu_model and mu_observed for each supernova</span>
+    <span class="n">chit2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="o">**</span><span class="mi">2</span><span class="o">/</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span><span class="o">/</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="mi">1</span><span class="o">/</span><span class="n">sigma</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span>
+    <span class="n">chi2</span> <span class="o">=</span> <span class="n">chit2</span> <span class="o">-</span> <span class="p">(</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">C</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">C</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+    <span class="n">chi2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">chi2</span><span class="p">,</span><span class="n">nan</span><span class="o">=</span><span class="mf">9999.</span><span class="p">)</span> <span class="c1"># catches any not-a-number values</span>
+    <span class="k">return</span> <span class="n">chi2</span>
+
+<span class="c1"># The following is if you&#39;re using a covariance matrix (taking into account correlations between supernovae)</span>
+<span class="k">def</span> <span class="nf">chi2_mscranalytic_covariance</span><span class="p">(</span><span class="n">delta</span><span class="p">,</span><span class="n">cov2d</span><span class="p">):</span>
+    <span class="c1"># delta is the array of differences between mu_model and mu_observed for each supernova</span>
+    <span class="n">deltaT</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">transpose</span><span class="p">(</span><span class="n">delta</span><span class="p">)</span>
+    <span class="n">chit2</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span> <span class="o">@</span> <span class="n">cov2d</span> <span class="o">@</span> <span class="n">deltaT</span><span class="p">)</span>
+    <span class="n">B</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">delta</span> <span class="o">@</span> <span class="n">cov2d</span><span class="p">)</span>
+    <span class="n">C</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sum</span><span class="p">(</span><span class="n">cov2d</span><span class="p">)</span>
+    <span class="n">chi2</span> <span class="o">=</span> <span class="n">chit2</span> <span class="o">-</span> <span class="p">(</span><span class="n">B</span><span class="o">**</span><span class="mi">2</span> <span class="o">/</span> <span class="n">C</span><span class="p">)</span> <span class="o">+</span> <span class="n">np</span><span class="o">.</span><span class="n">log</span><span class="p">(</span><span class="n">C</span> <span class="o">/</span> <span class="p">(</span><span class="mi">2</span><span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">pi</span><span class="p">))</span>
+    <span class="n">chi2</span><span class="o">=</span><span class="n">np</span><span class="o">.</span><span class="n">nan_to_num</span><span class="p">(</span><span class="n">chi2</span><span class="p">,</span><span class="n">nan</span><span class="o">=</span><span class="mf">9999.</span><span class="p">)</span> <span class="c1"># catches any not-a-number values</span>
+    <span class="k">return</span> <span class="n">chi2</span>
 </pre></div>
-<div id="cell-7" class="clipboard-copy-txt"></div>
+<div id="cell-7" class="clipboard-copy-txt"># The following is if you're using diagonal errors (an error bar on each supernova individually)
+def chi2_mscranalytic(delta,sigma):
+    # delta is the array of differences between mu_model and mu_observed for each supernova
+    chit2 = np.sum(delta**2/sigma**2)
+    B = np.sum(delta/sigma**2)
+    C = np.sum(1/sigma**2)
+    chi2 = chit2 - (B**2 / C) + np.log(C / (2* np.pi))
+    chi2=np.nan_to_num(chi2,nan=9999.) # catches any not-a-number values
+    return chi2
+
+# The following is if you're using a covariance matrix (taking into account correlations between supernovae)
+def chi2_mscranalytic_covariance(delta,cov2d):
+    # delta is the array of differences between mu_model and mu_observed for each supernova
+    deltaT = np.transpose(delta)
+    chit2 = np.sum(delta @ cov2d @ deltaT)
+    B = np.sum(delta @ cov2d)
+    C = np.sum(cov2d)
+    chi2 = chit2 - (B**2 / C) + np.log(C / (2* np.pi))
+    chi2=np.nan_to_num(chi2,nan=9999.) # catches any not-a-number values
+    return chi2</div>
     
         </div>
     </div>
