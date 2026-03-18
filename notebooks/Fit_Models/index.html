@@ -507,6 +507,34 @@
 
             
           
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data/DES-SN5YR_HD.csv" class="md-nav__link">
+        DES Data
+      </a>
+    </li>
+  
+
+            
+          
+            
+              
+  
+  
+  
+    <li class="md-nav__item">
+      <a href="../data/STAT%2BSYS.txt" class="md-nav__link">
+        DES Covariance
+      </a>
+    </li>
+  
+
+            
+          
         </ul>
       </nav>
     </li>
@@ -2404,9 +2432,10 @@ jp-needs-light-background
 <div class="jp-InputArea jp-Cell-inputArea"><div class="jp-InputPrompt jp-InputArea-prompt">
 </div><div class="jp-RenderedHTMLCommon jp-RenderedMarkdown jp-MarkdownOutput " data-mime-type="text/markdown">
 <h2 id="36-now-fit-the-real-data">3.6 Now fit the real data!!<a class="anchor-link" href="#36-now-fit-the-real-data">&#182;</a></h2><p>The Dark Energy Survey recently released a set of 1635 new high-redshift supernovae, which they combined with 194 low-redshift supernovae to make the state-of-the-art supernova data set.  You can read about it here: <a href="https://ui.adsabs.harvard.edu/abs/2024arXiv240102929D/abstract">https://ui.adsabs.harvard.edu/abs/2024arXiv240102929D/abstract</a></p>
-<p>The data are all available from here: <a href="https://github.com/des-science/DES-SN5YR">https://github.com/des-science/DES-SN5YR</a>
-Go into 4_DISTANCES_COVMAT and download the Hubble diagram from DES-SN5YR_HD.csv and the covariance matrix from STAT+SYS.txt.gz
-Use gunzip STAT+SYS.txt.gz to unzip it.</p>
+<p>The data are all available in the menu on the left.  Make sure you download these and have them in your data directory before running. 
+DES-SN5YR_HD.csv contains the redshifts and magnitudes of the supernovae, and diagonal errors.<br>
+STAT+SYS.txt contains the covariance matrix (the correlated errors). 
+You can read about the data here: <a href="https://des-sn-dr.readthedocs.io/en/latest/">https://des-sn-dr.readthedocs.io/en/latest/</a> in particular here: <a href="https://des-sn-dr.readthedocs.io/en/latest/4_DISTANCES_COVMAT.html">https://des-sn-dr.readthedocs.io/en/latest/4_DISTANCES_COVMAT.html</a></p>
 <p>Here's a snippet of code to read in the data:</p>
 
 </div>
