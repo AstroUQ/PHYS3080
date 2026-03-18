@@ -13,6 +13,8 @@ nav:
     - Data:
       - Data00: notebooks/data/Data00.txt
       - Data0: notebooks/data/Data0.txt
+      - DES Data: notebooks/data/DES-SN5YR_HD.csv
+      - DES Covariance: notebooks/data/STAT+SYS.txt
     #   - Data1: notebooks/data/Data1.txt
     #   - Data2: notebooks/data/Data2.txt
     #   - Data3: notebooks/data/Data3.txt
